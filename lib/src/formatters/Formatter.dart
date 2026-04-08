@@ -1,25 +1,35 @@
 part of sprintf;
 
+/// Typed replacement for the old `Map<String, dynamic>` options.
+///
+/// A single instance is reused per [PrintFormat] to avoid allocation.
+class FormatOptions {
+  bool isUpper = false;
+  int width = -1;
+  int precision = -1;
+  String sign = '';
+  String paddingChar = ' ';
+  bool addSpace = false;
+  bool leftAlign = false;
+  bool alternateForm = false;
+
+  void reset() {
+    isUpper = false;
+    width = -1;
+    precision = -1;
+    sign = '';
+    paddingChar = ' ';
+    addSpace = false;
+    leftAlign = false;
+    alternateForm = false;
+  }
+}
+
+/// Legacy base class — kept only so the [PrintFormatFormatter] typedef
+/// continues to compile.  New code should not subclass this.
 abstract class Formatter {
   var fmt_type;
   var options;
-
   Formatter(this.fmt_type, this.options);
-
-  static String get_padding(int count, String pad) {
-    var padding_piece = pad;
-    var padding = StringBuffer();
-
-    while (count > 0) {
-      if ((count & 1) == 1) {
-        padding.write(padding_piece);
-      }
-      count >>= 1;
-      padding_piece = '${padding_piece}${padding_piece}';
-    }
-
-    return padding.toString();
-  }
-
   String asString();
 }

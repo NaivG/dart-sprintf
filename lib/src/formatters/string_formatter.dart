@@ -1,32 +1,22 @@
 part of sprintf;
 
-class StringFormatter extends Formatter {
-  var _arg;
+/// Formats a value for the %s specifier.
+String _formatString(dynamic arg, FormatOptions o) {
+  var result = arg.toString();
 
-  StringFormatter(this._arg, var fmt_type, var options)
-      : super(fmt_type, options) {
-    options['padding_char'] = ' ';
+  // Precision truncates the string
+  if (o.precision > -1 && o.precision <= result.length) {
+    result = result.substring(0, o.precision);
   }
-  @override
-  String asString() {
-    var ret = _arg.toString();
 
-    if (options['precision'] > -1 && options['precision'] <= ret.length) {
-      ret = ret.substring(0, options['precision']);
+  // Width pads the string (always with spaces for %s)
+  if (o.width > result.length) {
+    if (o.leftAlign) {
+      result = result.padRight(o.width);
+    } else {
+      result = result.padLeft(o.width);
     }
-
-    if (options['width'] > -1) {
-      int diff = (options['width'] - ret.length);
-
-      if (diff > 0) {
-        var padding = Formatter.get_padding(diff, options['padding_char']);
-        if (!options['left_align']) {
-          ret = '${padding}${ret}';
-        } else {
-          ret = '${ret}${padding}';
-        }
-      }
-    }
-    return ret;
   }
+
+  return result;
 }
