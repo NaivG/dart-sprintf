@@ -141,12 +141,23 @@ class OldFloatFormatter extends OldFormatter {
 
   OldFloatFormatter(this._arg, var fmt_type, var options)
       : super(fmt_type, options) {
-    if (_arg.isNaN) { _has_init = true; return; }
-    if (_arg.isInfinite) { _is_negative = _arg.isNegative; _has_init = true; return; }
+    if (_arg.isNaN) {
+      _has_init = true;
+      return;
+    }
+    if (_arg.isInfinite) {
+      _is_negative = _arg.isNegative;
+      _has_init = true;
+      return;
+    }
     _arg = _arg.toDouble();
-    if (_arg < 0) { _is_negative = true; _arg = -_arg; }
+    if (_arg < 0) {
+      _is_negative = true;
+      _arg = -_arg;
+    }
 
-    var arg_str = _arg == _arg.truncate() ? _arg.toStringAsFixed(1) : _arg.toString();
+    var arg_str =
+        _arg == _arg.truncate() ? _arg.toStringAsFixed(1) : _arg.toString();
     var m1 = _number_rx.firstMatch(arg_str);
     if (m1 != null) {
       var int_part = m1.group(1)!;
@@ -180,11 +191,13 @@ class OldFloatFormatter extends OldFormatter {
           _decimal = _exponent + 1;
           _digits.addAll(int_part.split('').map(int.parse));
           _digits.addAll(fraction.split('').map(int.parse));
-          _digits.addAll(OldFormatter.get_padding(diff, '0').split('').map(int.parse));
+          _digits.addAll(
+              OldFormatter.get_padding(diff, '0').split('').map(int.parse));
         } else {
           var diff = int_part.length - _exponent - 1;
           _decimal = int_part.length;
-          _digits.addAll(OldFormatter.get_padding(diff, '0').split('').map(int.parse));
+          _digits.addAll(
+              OldFormatter.get_padding(diff, '0').split('').map(int.parse));
           _digits.addAll(int_part.split('').map(int.parse));
           _digits.addAll(fraction.split('').map(int.parse));
         }
@@ -263,12 +276,14 @@ class OldFloatFormatter extends OldFormatter {
     var offset = _decimal + precision - 1;
     var extra_zeroes = precision - (_digits.length - offset);
     if (extra_zeroes > 0) {
-      _digits.addAll(OldFormatter.get_padding(extra_zeroes, '0').split('').map(int.parse));
+      _digits.addAll(
+          OldFormatter.get_padding(extra_zeroes, '0').split('').map(int.parse));
     }
     _round(offset + 1, offset);
     var ret = _digits.sublist(0, _decimal).fold('', (i, e) => '${i}${e}');
     var trailing_digits = _digits.sublist(_decimal, _decimal + precision);
-    if (remove_trailing_zeros) trailing_digits = _remove_trailing_zeros(trailing_digits);
+    if (remove_trailing_zeros)
+      trailing_digits = _remove_trailing_zeros(trailing_digits);
     var trailing_zeroes = trailing_digits.fold('', (i, e) => '${i}${e}');
     if (trailing_zeroes.isEmpty) return ret;
     return '${ret}.${trailing_zeroes}';
@@ -278,7 +293,8 @@ class OldFloatFormatter extends OldFormatter {
     var offset = _decimal - _exponent;
     var extra_zeroes = precision - (_digits.length - offset) + 1;
     if (extra_zeroes > 0) {
-      _digits.addAll(OldFormatter.get_padding(extra_zeroes, '0').split('').map(int.parse));
+      _digits.addAll(
+          OldFormatter.get_padding(extra_zeroes, '0').split('').map(int.parse));
     }
     _round(offset + precision, offset);
     var ret = _digits[offset - 1].toString();
@@ -286,7 +302,8 @@ class OldFloatFormatter extends OldFormatter {
     var _exp_str = _exponent.abs().toString();
     if (_exponent < 10 && _exponent > -10) _exp_str = '0${_exp_str}';
     _exp_str = (_exponent < 0) ? 'e-${_exp_str}' : 'e+${_exp_str}';
-    if (remove_trailing_zeros) trailing_digits = _remove_trailing_zeros(trailing_digits);
+    if (remove_trailing_zeros)
+      trailing_digits = _remove_trailing_zeros(trailing_digits);
     if (trailing_digits.isNotEmpty) ret += '.';
     ret = trailing_digits.fold(ret, (i, e) => '${i}${e}');
     return '${ret}${_exp_str}';
@@ -295,7 +312,11 @@ class OldFloatFormatter extends OldFormatter {
   List<int> _remove_trailing_zeros(List<int> trailing_digits) {
     var nzeroes = 0;
     for (var i = trailing_digits.length - 1; i >= 0; i--) {
-      if (trailing_digits[i] == 0) { nzeroes++; } else { break; }
+      if (trailing_digits[i] == 0) {
+        nzeroes++;
+      } else {
+        break;
+      }
     }
     return trailing_digits.sublist(0, trailing_digits.length - nzeroes);
   }
@@ -396,13 +417,17 @@ class OldPrintFormat {
         'sign': '',
         'specifier_type': _type,
       };
-      _parse_flags(_flags).forEach((var k, var v) { _options[k] = v; });
+      _parse_flags(_flags).forEach((var k, var v) {
+        _options[k] = v;
+      });
       var _arg = _parameter == null ? null : args[int.parse(_parameter) - 1];
       if (_width != null) {
-        _options['width'] = (_width == '*' ? args[arg_offset++] : int.parse(_width));
+        _options['width'] =
+            (_width == '*' ? args[arg_offset++] : int.parse(_width));
       }
       if (_precision != null) {
-        _options['precision'] = (_precision == '*' ? args[arg_offset++] : int.parse(_precision));
+        _options['precision'] =
+            (_precision == '*' ? args[arg_offset++] : int.parse(_precision));
       }
       if (_arg == null && _type != '%') _arg = args[arg_offset++];
       _options['is_upper'] = uppercase_rx.hasMatch(_type);

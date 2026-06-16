@@ -4,7 +4,7 @@
 ///
 ///     import 'package:dart_sprintf/sprintf.dart';
 ///     print(sprintf('%s %d', ['foo', 42]));
-/// 
+///
 library;
 
 import 'src/sprintf_impl.dart';
