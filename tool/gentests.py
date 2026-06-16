@@ -1,9 +1,16 @@
-from itertools import combinations, permutations
+"""
+Generate test data for sprintf.
+"""
+from itertools import combinations
 from pprint import pformat
-from ctypes import *
+from ctypes import CDLL, create_string_buffer, c_double, c_int64
 import os
+import sys
 
-sprintf = CDLL('libc.so.6').sprintf
+if sys.platform == 'win32':
+    sprintf = CDLL('msvcrt').sprintf
+else:
+    sprintf = CDLL('libc.so.6').sprintf
 
 JS_MAX=9007199254740991
 JS_MIN=-9007199254740991
@@ -42,7 +49,7 @@ val = {
 
 def get_prefix():
   yield ''
-  for i in xrange(0, 7):
+  for i in range(0, 7):
     for l in combinations([' ', '-', '+', '#', '0', '6', '.6'], r = i):
       yield ''.join(l)
 
@@ -52,51 +59,51 @@ new_expected = {}
 
 for prefix, type_map in expected.items():
 	new_expected[prefix] = {}
-	for fmt_type, expected in type_map.items():
-	
+	for fmt_type, _ in type_map.items():
+
 		new_expected[prefix][fmt_type] = []
-		
+
 		pyfmt = "|{{:{}{}}}|".format(prefix.replace('-', '<'), fmt_type)
 		cfmt = "|%{}{}|".format(prefix, fmt_type)
 		input_array = _test_suite_input[fmt_type]
-		
+
 		if fmt_type in 'doxX':
 			cfmt = cfmt.replace('d', 'lld').replace('o', 'llo').replace('x', 'llx').replace('X', 'llX')
-		
+
 		for input_data in input_array:
 			ret = create_string_buffer(1024)
 			try:
 				if fmt_type == '%':
 					if len(prefix) > 0:
 						new_expected[prefix][fmt_type].append('"throwsA"')
-						#print cfmt, 'throws'
+						#print(cfmt, 'throws')
 						continue
 					else:
-						sprintf(ret, cfmt, input_data)
-						#print cfmt, ret.value
-						new_expected[prefix][fmt_type].append(ret.value)
-				
+						sprintf(ret, cfmt.encode(), input_data)
+						#print(cfmt, ret.value.decode())
+						new_expected[prefix][fmt_type].append(ret.value.decode())
+
 				elif fmt_type in 'doxX':
 					if fmt_type in 'oxX':
 						wrapped = input_data&JS_MAX
 					else:
 						wrapped = input_data
-					sprintf(ret, cfmt, c_int64(wrapped))
-					new_expected[prefix][fmt_type].append(ret.value)
-					
+					sprintf(ret, cfmt.encode(), c_int64(wrapped))
+					new_expected[prefix][fmt_type].append(ret.value.decode())
+
 					#if 'x' in fmt_type and input_data == -123:
-					#	print "OUTPUT: {} {}".format(cfmt, ret.value)
-				
+					#    print("OUTPUT: {} {}".format(cfmt, ret.value.decode()))
+
 				elif fmt_type in 'efgEFG':
-					sprintf(ret, cfmt, c_double(input_data))
-					#print cfmt, ret.value
-					new_expected[prefix][fmt_type].append(ret.value)
-				
+					sprintf(ret, cfmt.encode(), c_double(input_data))
+					#print(cfmt, ret.value.decode())
+					new_expected[prefix][fmt_type].append(ret.value.decode())
+
 				else:
 					ret = create_string_buffer(1024)
-					sprintf(ret, cfmt, input_data)
-					#print cfmt, ret.value
-					new_expected[prefix][fmt_type].append(ret.value)
+					sprintf(ret, cfmt.encode(), input_data.encode() if isinstance(input_data, str) else input_data)
+					#print(cfmt, ret.value.decode())
+					new_expected[prefix][fmt_type].append(ret.value.decode())
 			except ValueError:
 				raise
 
