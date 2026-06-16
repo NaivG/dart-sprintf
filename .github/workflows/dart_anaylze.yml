@@ -2,17 +2,18 @@ name: Analyze Dart Code
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
     paths-ignore:
       - '**.md'
       - '**.png'
       - '.github/**'
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
     paths-ignore:
       - '**.md'
       - '**.png'
       - '.github/**'
+  workflow_dispatch:
 
 jobs:
   build:
