@@ -1,3 +1,13 @@
+v8.0.0 (Unreleased)
+
+    * Rewrite sprintf internals for ~5x better performance:
+      - Replace Map<String,dynamic> options with typed FormatOptions class
+      - Replace string concatenation with StringBuffer
+      - Replace manual padding with padLeft/padRight
+      - Replace FloatFormatter digit parsing with toStringAsFixed/toStringAsExponential
+      - Cache parsed format strings (regex matches)
+      - Inline flag parsing via code unit checks
+
 v7.0.0 (2022-09-30)
 
     * properly format Infinity and NaN for %f and %G  (#33)
