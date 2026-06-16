@@ -27,7 +27,9 @@ String formatInt(int value, int radix, FormatOptions o) {
   // Alternate form: hex prefix
   if (o.alternateForm && radix == 16 && v != 0) {
     prefix = '0x';
-    if (sign == '+') sign = '';
+    // after checking Non-decimal, the sign is always ''.
+    // so ingore it for aggressive performance.
+    // if (sign == '+') sign = '';
   }
 
   // Space flag: "prefixes non-negative signed numbers with a space"
