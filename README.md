@@ -2,7 +2,7 @@
 
 Dart implementation of sprintf.
 
-[![Build Status](https://travis-ci.org/Naddiseo/dart-sprintf.svg?branch=master)](https://travis-ci.org/Naddiseo/dart-sprintf/)
+[![Build Status](https://github.com/NaivG/dart-sprintf/actions/workflows/dart_analyze.yml/badge.svg)](https://github.com/NaivG/dart-sprintf/actions/)
 
 ## ChangeLog
 

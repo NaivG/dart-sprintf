@@ -10,6 +10,7 @@ v8.0.0 (Unreleased)
     * Rename package to dart_sprintf and update documentation
     * Port test data generator (tool/gentests.py) to Python 3
     * Rewrite library head to dart 3 syle
+    * Migrate Travis CI to Github Actions
 
 v7.0.0 (2022-09-30)
 
