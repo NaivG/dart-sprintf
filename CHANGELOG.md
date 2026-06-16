@@ -7,6 +7,9 @@ v8.0.0 (Unreleased)
       - Replace FloatFormatter digit parsing with toStringAsFixed/toStringAsExponential
       - Cache parsed format strings (regex matches)
       - Inline flag parsing via code unit checks
+    * Rename package to dart_sprintf and update documentation
+    * Port test data generator (tool/gentests.py) to Python 3
+    * Rewrite library head to dart 3 syle
 
 v7.0.0 (2022-09-30)
 

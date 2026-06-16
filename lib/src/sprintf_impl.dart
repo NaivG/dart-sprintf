@@ -1,4 +1,7 @@
-part of sprintf;
+import 'formatters/Formatter.dart';
+import 'formatters/int_formatter.dart';
+import 'formatters/float_formatter.dart';
+import 'formatters/string_formatter.dart';
 
 typedef PrintFormatFormatter = Formatter Function(dynamic arg, dynamic options);
 
@@ -20,11 +23,7 @@ class PrintFormat {
   /// Legacy custom formatters for backwards compatibility.
   final Map<String, PrintFormatFormatter> _customFormatters = {};
 
-  String call(String fmt, var args) {
-    if (args is! List) {
-      throw ArgumentError('Expecting list as second argument');
-    }
-
+  String call(String fmt, List<dynamic> args) {
     // ── Cached regex matches ──────────────────────────────────────────
     var matches = _matchCache[fmt];
     if (matches == null) {
@@ -126,19 +125,19 @@ class PrintFormat {
 
     switch (type) {
       case 'd' || 'i':
-        return _formatInt(arg as int, 10, o);
+        return formatInt(arg as int, 10, o);
       case 'x':
-        return _formatInt(arg as int, 16, o);
+        return formatInt(arg as int, 16, o);
       case 'o':
-        return _formatInt(arg as int, 8, o);
+        return formatInt(arg as int, 8, o);
       case 'f':
-        return _formatFloat((arg as num).toDouble(), 'f', o);
+        return formatFloat((arg as num).toDouble(), 'f', o);
       case 'e':
-        return _formatFloat((arg as num).toDouble(), 'e', o);
+        return formatFloat((arg as num).toDouble(), 'e', o);
       case 'g':
-        return _formatFloat((arg as num).toDouble(), 'g', o);
+        return formatFloat((arg as num).toDouble(), 'g', o);
       case 's':
-        return _formatString(arg, o);
+        return formatString(arg, o);
       default:
         throw ArgumentError('Unknown format type $type');
     }
@@ -166,7 +165,12 @@ class PrintFormat {
     _customFormatters[specifier] = formatter;
   }
 
+  @Deprecated('Spell error, Use unregister_specifier() instead')
   void unregistier_specifier(String specifier) {
+    _customFormatters.remove(specifier);
+  }
+
+  void unregister_specifier(String specifier) {
     _customFormatters.remove(specifier);
   }
 }

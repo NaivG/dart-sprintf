@@ -10,7 +10,7 @@
 
 import 'dart:math';
 
-import 'package:sprintf/sprintf.dart' as new_impl;
+import 'package:dart_sprintf/sprintf.dart' as new_impl;
 
 import 'perf_tester.dart';
 

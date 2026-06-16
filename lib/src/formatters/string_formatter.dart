@@ -1,7 +1,7 @@
-part of sprintf;
+import 'Formatter.dart';
 
 /// Formats a value for the %s specifier.
-String _formatString(dynamic arg, FormatOptions o) {
+String formatString(dynamic arg, FormatOptions o) {
   var result = arg.toString();
 
   // Precision truncates the string

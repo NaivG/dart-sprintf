@@ -1,12 +1,12 @@
-part of sprintf;
+import 'Formatter.dart';
 
 /// Formats an integer for %d, %i, %x, %o specifiers.
 ///
 /// Replaces the heap-allocated `IntFormatter` class + `Map<String,dynamic>`
 /// with a single static function using typed [FormatOptions] and `padLeft`.
-const int _intMaxInt = 0x1FFFFFFFFFFFFF; // JS 53-bit limit
+const int intMaxInt = 0x1FFFFFFFFFFFFF; // JS 53-bit limit
 
-String _formatInt(int value, int radix, FormatOptions o) {
+String formatInt(int value, int radix, FormatOptions o) {
   var prefix = '';
   var sign = o.sign;
 
@@ -18,7 +18,7 @@ String _formatInt(int value, int radix, FormatOptions o) {
       sign = '-';
     } else {
       // Reverse twos complement for non-decimal radixes
-      v = (_intMaxInt - (~v) & _intMaxInt);
+      v = (intMaxInt - (~v) & intMaxInt);
     }
   }
 
@@ -27,9 +27,7 @@ String _formatInt(int value, int radix, FormatOptions o) {
   // Alternate form: hex prefix
   if (o.alternateForm && radix == 16 && v != 0) {
     prefix = '0x';
-    if (sign == '+' && radix != 10) {
-      sign = '';
-    }
+    if (sign == '+') sign = '';
   }
 
   // Space flag: "prefixes non-negative signed numbers with a space"

@@ -123,7 +123,6 @@ def prettify(expr):
 
 with open(test_data_path, 'w') as fp:
 	
-	fp.write('part of sprintf_test;\n')
 	fp.write('var expectedTestData = ')
 	fp.write(prettify(new_expected))
 	fp.write(';\n')

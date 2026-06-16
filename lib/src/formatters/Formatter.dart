@@ -1,5 +1,3 @@
-part of sprintf;
-
 /// Typed replacement for the old `Map<String, dynamic>` options.
 ///
 /// A single instance is reused per [PrintFormat] to avoid allocation.

@@ -1,10 +1,7 @@
-library sprintf_test;
-
 import 'package:test/test.dart';
 
-import 'package:sprintf/sprintf.dart';
-
-part 'testing_data.dart';
+import 'package:dart_sprintf/sprintf.dart';
+import 'testing_data.dart';
 
 void test_testdata() {
   expectedTestData.forEach((prefix, type_map) {

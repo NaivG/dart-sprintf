@@ -1,9 +1,9 @@
-part of sprintf;
+import 'Formatter.dart';
 
 /// Formats a double for %f, %e, %g specifiers using Dart's native
 /// `toStringAsFixed` / `toStringAsExponential` instead of manual
 /// digit-by-digit parsing.
-String _formatFloat(double value, String fmtType, FormatOptions o) {
+String formatFloat(double value, String fmtType, FormatOptions o) {
   // ── Sign handling ─────────────────────────────────────────────────
   if (o.addSpace && o.sign == '' && !value.isNegative) {
     o.sign = ' ';

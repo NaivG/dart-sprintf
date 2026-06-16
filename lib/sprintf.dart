@@ -1,10 +1,15 @@
-library sprintf;
+/// sprintf implementation for Dart.
+///
+/// Usage:
+///
+///     import 'package:dart_sprintf/sprintf.dart';
+///     print(sprintf('%s %d', ['foo', 42]));
+/// 
+library;
 
+import 'src/sprintf_impl.dart';
 
-part 'src/formatters/Formatter.dart';
-part 'src/formatters/int_formatter.dart';
-part 'src/formatters/float_formatter.dart';
-part 'src/formatters/string_formatter.dart';
-part 'src/sprintf_impl.dart';
+export 'src/sprintf_impl.dart' show PrintFormat, PrintFormatFormatter;
+export 'src/formatters/Formatter.dart' show Formatter, FormatOptions;
 
 var sprintf = PrintFormat();
